@@ -18,7 +18,7 @@ const setSchema = new Schema( {
     },
 
     releaseYear: {
-        type: Number,
+        type: String,
         required: true
     }
 }, {

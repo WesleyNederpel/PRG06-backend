@@ -12,10 +12,10 @@ router.get('/', async (req, res) => {
             "items": sets,
             "_links": {
                 "self": {
-                    "href": process.env.BASE_URL+"/sets/"
+                    "href": process.env.BASE_URL + "/sets/"
                 },
                 "collection": {
-                    "href": process.env.BASE_URL+"/sets"
+                    "href": process.env.BASE_URL + "/sets"
                 }
             }
         }
@@ -25,26 +25,44 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/seed', async (req, res) => {
-    try {
-        await Set.deleteMany({})
+router.post('/', async (req, res) => {
+    if (req.body.method === "SEED") {
+        try {
+            await Set.deleteMany({})
 
-        const amount = req.body.amount
+            const amount = req.body.amount
 
-        console.log(amount)
+            for (let i = 0; i < amount; i++) {
+                await Set.create({
+                    name: faker.lorem.lines(1),
+                    brand: faker.lorem.lines(1),
+                    setNumber: faker.lorem.lines(1),
+                    releaseYear: faker.date.future()
+                });
+            }
 
-        for (let i = 0; i < amount; i++) {
-            await Set.create({
-                name: faker.lorem.lines(1),
-                brand: faker.lorem.lines(1),
-                setNumber: faker.helpers.uniqueArray(1),
-                releaseYear: faker.date.past(3)
-            });
+            res.status(200).json({success: true})
+        } catch (error) {
+            res.status(500).json({error: error.message})
         }
+    } else {
+        try {
+            const name = req.body.name
+            const brand = req.body.brand
+            const setNumber = req.body.setNumber
+            const releaseYear = req.body.releaseYear
 
-        res.status(200).json({success: true})
-    } catch (error) {
-        res.status(500).json({error: error.message})
+            await Set.create({
+                name: name,
+                brand: brand,
+                setNumber: setNumber,
+                releaseYear: releaseYear
+            })
+
+            res.status(200).json({success: true})
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
     }
 })
 
