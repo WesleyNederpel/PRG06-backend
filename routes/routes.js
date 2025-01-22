@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
     try {
-        const sets = await Set.find({});
+        const sets = await Set.find({}, 'name brand');
 
         const collection = {
             "items": sets,
