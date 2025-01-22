@@ -29,10 +29,10 @@ const setSchema = new Schema( {
 
             ret._links = {
                 self: {
-                    href: process.env.BASE_URL+`/set/${ret.id}`
+                    href: process.env.BASE_URL+`/sets/${ret.id}`
                 },
                 collection: {
-                    href: process.env.BASE_URL+`/set`
+                    href: process.env.BASE_URL+`/sets`
                 }
             }
 

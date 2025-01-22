@@ -11,10 +11,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/legosets')
     console.error('Kan geen verbinding maken met MongoDB (LEGO)', error)
 })
 
-app.use(express.json())
-
-app.use(express.urlencoded({extended: true}))
-
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization')
@@ -27,6 +23,10 @@ app.use((req, res, next) => {
         return res.status(406).json({error: 'Requests are only accepted with Accept of json'})
     } next()
 })
+app.use(express.json())
+
+app.use(express.urlencoded({extended: true}))
+
 
 app.use('/sets', sets)
 
