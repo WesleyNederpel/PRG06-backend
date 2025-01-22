@@ -79,7 +79,7 @@ router.get('/:id', async (req, res) => {
         const set = await Set.findById(setId)
 
         if (!set) {
-            return res.status(404).json({message: "De id die je hebt opgevraagd bestaat niet"})
+            return res.status(404).json({message: "Set not found"})
         }
 
         res.status(200).json(set)
@@ -94,11 +94,11 @@ router.put('/:id', async (req, res) => {
         const setId = req.params.id;
         const updatedData = req.body;
 
-        // Check if any required fields are present and not empty
+        // Check if all required fields are filled
         const requiredFields = ['name', 'brand', 'setNumber', 'releaseYear'];
         for (const field of requiredFields) {
-            if (updatedData[field] !== undefined && (updatedData[field] === null || updatedData[field].trim() === '')) {
-                return res.status(400).json({ error: `${field} cannot be empty if provided.` });
+            if (!updatedData[field] || updatedData[field].trim() === '') {
+                return res.status(400).json({ error: `${field} is required and cannot be empty.` });
             }
         }
 
@@ -121,7 +121,7 @@ router.delete('/:id', async (req, res) => {
 
         await Set.findByIdAndDelete(setId)
 
-        res.status(204).json({success: true})
+        res.status(204).send()
     } catch (error) {
         res.status(500).json({error: error.message})
     }
