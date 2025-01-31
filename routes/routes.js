@@ -94,7 +94,6 @@ router.put('/:id', async (req, res) => {
         const setId = req.params.id;
         const updatedData = req.body;
 
-        // Check if all required fields are filled
         const requiredFields = ['name', 'brand', 'setNumber', 'releaseYear'];
         for (const field of requiredFields) {
             if (!updatedData[field] || updatedData[field].trim() === '') {
@@ -102,7 +101,6 @@ router.put('/:id', async (req, res) => {
             }
         }
 
-        // Proceed to update the document
         const updatedSet = await Set.findByIdAndUpdate(setId, updatedData, { new: true, runValidators: true });
 
         if (!updatedSet) {
@@ -117,13 +115,11 @@ router.put('/:id', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
     try {
-        const setId = req.params.id; // Extract the ID from the request parameters
-        const updatedData = req.body; // Extract the fields to be updated from the request body
+        const setId = req.params.id;
+        const updatedData = req.body;
 
-        // Perform the update
         const updatedSet = await Set.findByIdAndUpdate(setId, updatedData, { new: true, runValidators: true });
 
-        // If the set is not found, return a 404 error
         if (!updatedSet) {
             return res.status(404).json({ error: 'Set not found.' });
         }
